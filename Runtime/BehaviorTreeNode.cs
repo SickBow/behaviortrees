@@ -7,7 +7,9 @@ public abstract class BehaviorTreeNode : ScriptableObject
 {
     public abstract bool Execute(GameObject owner);
     public virtual BehaviorTreeNode Clone(){
-        return (BehaviorTreeNode)ScriptableObject.CreateInstance(this.GetType());
+        var clone = (BehaviorTreeNode)ScriptableObject.CreateInstance(this.GetType());
+        clone.name = this.name;
+        return clone;
     }
 }
 }
