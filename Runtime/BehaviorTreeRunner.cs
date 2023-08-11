@@ -8,7 +8,8 @@ public class BehaviorTreeRunner : MonoBehaviour
     [SerializeField] BehaviorTreeNode rootNode;
     [SerializeField] List<TreeConditionValue> treeConditionValues;
     private Dictionary<string, TreeConditionValue> _valuePairs;
-        
+    
+    public BehaviorTreeNode GetRootNode() => rootNode;    
     void InitializeDictionary(){
         _valuePairs = new Dictionary<string, TreeConditionValue>();
         foreach (TreeConditionValue cv in treeConditionValues){
