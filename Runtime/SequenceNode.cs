@@ -8,11 +8,16 @@ public class SequenceNode : CompositeNode
 {
     public override bool Execute(GameObject owner)
     {
-        foreach ( BehaviorTreeNode node in children ){
-            if (node.Execute(owner) == false)
-                return false;
-        }
+        State = NodeState.Running;
 
+        foreach ( BehaviorTreeNode node in children ){
+            if (node.Execute(owner) == false){
+                State = NodeState.Success;
+                return false;
+            }
+        }
+        
+        State = NodeState.Failure;
         return true;
     }
 }
