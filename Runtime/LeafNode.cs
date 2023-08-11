@@ -13,11 +13,15 @@ public class LeafNode : BehaviorTreeNode
 
     public override bool Execute(GameObject owner)
     {
+        State = NodeState.Running;
+
         if (CheckPreConditions() == false) {
             FalseActions(owner);
+            State = NodeState.Failure;
             return false;
         }
         Actions(owner);
+        State = NodeState.Success;
         return true;
     }
 
