@@ -9,7 +9,17 @@ public class BehaviorTreeRunner : MonoBehaviour
     [SerializeField] List<TreeConditionValue> treeConditionValues;
     private Dictionary<string, TreeConditionValue> _valuePairs;
     
-    public BehaviorTreeNode GetRootNode() => rootNode;    
+    public BehaviorTreeNode GetRootNode() => rootNode;
+    void ResetNodeState(BehaviorTreeNode node){
+        if (node == null) return;
+
+        node.State = NodeState.Idle;
+        if (node is CompositeNode composite){
+            foreach (var child in composite.children){
+                ResetNodeState(child);
+            }
+        }
+    }
     void InitializeDictionary(){
         _valuePairs = new Dictionary<string, TreeConditionValue>();
         foreach (TreeConditionValue cv in treeConditionValues){
@@ -69,7 +79,7 @@ public class BehaviorTreeRunner : MonoBehaviour
 
     void Run(){
         if (rootNode == null) return;
-
+        ResetNodeState(rootNode);
         rootNode.Execute(gameObject);
     }
     
