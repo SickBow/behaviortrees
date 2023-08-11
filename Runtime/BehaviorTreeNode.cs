@@ -5,6 +5,7 @@ using UnityEngine;
 namespace Sickbow.BehaviorTrees{
 public abstract class BehaviorTreeNode : ScriptableObject
 {
+    public NodeState State {get; protected set;} = NodeState.Idle;
     public abstract bool Execute(GameObject owner);
     public virtual BehaviorTreeNode Clone(){
         var clone = (BehaviorTreeNode)ScriptableObject.CreateInstance(this.GetType());
