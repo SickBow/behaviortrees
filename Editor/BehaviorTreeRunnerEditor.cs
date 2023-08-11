@@ -23,6 +23,9 @@ public class BehaviorTreeRunnerEditor : Editor
         Color originalColor = GUI.color;
 
         switch(node.State){
+            case NodeState.Idle :
+                GUI.color = Color.gray;
+                break;
             case NodeState.Running :
                 GUI.color = Color.yellow;
                 break;
