@@ -12,12 +12,12 @@ public class SequenceNode : CompositeNode
 
         foreach ( BehaviorTreeNode node in children ){
             if (node.Execute(owner) == false){
-                State = NodeState.Success;
+                State = NodeState.Failure;
                 return false;
             }
         }
         
-        State = NodeState.Failure;
+        State = NodeState.Success;
         return true;
     }
 }
