@@ -8,11 +8,16 @@ public class SelectorNode : CompositeNode
 {
     public override bool Execute(GameObject owner)
     {
-        foreach( BehaviorTreeNode node in children){
-            if (node.Execute(owner) == true)
-                return true;
-        }
+        State = NodeState.Running;
 
+        foreach( BehaviorTreeNode node in children){
+            if (node.Execute(owner) == true){
+                State = NodeState.Success;
+                return true;
+            }
+        }
+        
+        State = NodeState.Failure;
         return false;
     }
 }
