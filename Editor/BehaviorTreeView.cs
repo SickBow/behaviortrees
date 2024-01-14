@@ -9,6 +9,7 @@ using Sickbow.BehaviorTrees;
 public class BehaviorTreeView : GraphView
 {
     private SerializedObject m_serializedObject;
+    private float nodeWidth = 150;
     private float xSpacing = 600;
     private float ySpacing = 200;
 
@@ -73,13 +74,19 @@ public class BehaviorTreeView : GraphView
     private void PositionNode(BehaviorTreeGraphNode graphNode, int depth, Vector2 parentPosition, int siblingIndex = 0, int totalSiblings = 0)
     {
         // Calculate position based on depth and xPos
-        float widthDecreaseFactor = Mathf.Pow(0.75f, depth); // 0.9 = 90%, decreasing for each depth
+        
+        float widthDecreaseFactor = Mathf.Pow(0.7f, depth); // 0.9 = 90%, decreasing for each depth
         float totalWidth = totalSiblings * xSpacing * widthDecreaseFactor;
-        
-        
+        float xOffset = (siblingIndex * xSpacing * widthDecreaseFactor);
+
+        if (graphNode.behaviorTreeNode is LeafNode leaf)
+        {
+            xOffset = nodeWidth * siblingIndex;
+            totalWidth = totalSiblings * nodeWidth;
+        }
         float startOffset = totalWidth / 2;
 
-        Vector2 position = new Vector2(parentPosition.x + (siblingIndex * xSpacing * widthDecreaseFactor) - startOffset, ySpacing * depth);
+        Vector2 position = new Vector2(parentPosition.x + xOffset - startOffset, ySpacing * depth);
 
 
         graphNode.SetPosition(new Rect(position, graphNode.GetPosition().size));
