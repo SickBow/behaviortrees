@@ -8,8 +8,10 @@ public class BehaviorTreeRunner : MonoBehaviour
     [SerializeField] BehaviorTreeNode rootNode;
     [SerializeField] List<TreeConditionValue> treeConditionValues;
     private Dictionary<string, TreeConditionValue> _valuePairs;
-    
+
+
     public BehaviorTreeNode GetRootNode() => rootNode;
+    
     void ResetNodeState(BehaviorTreeNode node){
         if (node == null) return;
 
@@ -33,11 +35,13 @@ public class BehaviorTreeRunner : MonoBehaviour
         _valuePairs[valueName].value = value;
     }
 
-    BehaviorTreeNode CloneNodes(BehaviorTreeNode root){
+    BehaviorTreeNode CloneNodes(BehaviorTreeNode root, BehaviorTreeNode parent = null){
         if (root == null)
             return null;
         
         var newRoot = root.Clone();
+        newRoot.parent = parent;
+
         if (newRoot is LeafNode leafNode){
             leafNode.invertPreConditions = (root as LeafNode).invertPreConditions;
             leafNode.preConditions = new List<TreeConditionValue>();
@@ -52,7 +56,7 @@ public class BehaviorTreeRunner : MonoBehaviour
             compositeRoot.children.Clear();
             if ((root as CompositeNode)?.children != null)
             foreach (BehaviorTreeNode child in (root as CompositeNode).children){
-                compositeRoot.children.Add(CloneNodes(child));
+                compositeRoot.children.Add(CloneNodes(child,newRoot));
             }
         }
         return newRoot;
@@ -79,6 +83,7 @@ public class BehaviorTreeRunner : MonoBehaviour
 
     void Run(){
         if (rootNode == null) return;
+
         ResetNodeState(rootNode);
         rootNode.Execute(gameObject);
     }
