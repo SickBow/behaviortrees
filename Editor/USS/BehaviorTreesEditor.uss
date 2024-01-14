@@ -1,0 +1,51 @@
+BehaviorTreeView{
+	flex-grow: 1;
+}
+#Grid{
+	--thick-lines: 0;
+	--spacing:15;
+	--grid-background-color: rgb(35,35,35);
+	--line-color: rgb(32,32,32);
+}
+.node {
+    background-color: rgb(60, 60, 60); /* Lighter gray for the node background */
+    color: white; /* White text color for contrast */
+    border-color: rgb(90, 90, 90); /* Slightly lighter border */
+    border-width: 2px;
+    border-radius: 4px;
+}
+.node.active {
+    background-color: rgb(60, 150, 60); /* Lighter gray for the node background */
+    color: white; /* White text color for contrast */
+    border-color: rgb(90, 200, 90); /* Slightly lighter border */
+    /* border-width: 2px;
+    border-radius: 4px; */
+}
+
+/* Style for the node title */
+.node__title {
+    background-color: rgb(45, 45, 45); /* Darker title bar */
+    color: white; /* White title text */
+    text-align: center; /* Center-align the title text */
+    width: 100%; /* Ensure the title spans the full width */
+    
+}
+
+.node__title-label{
+    padding-left: 10px;
+    padding-right: 10px;
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-top: 1px;
+    margin-bottom: 1px;
+    text-align: middle-center;
+}
+
+.node__collapse-button {
+display: none;
+}
+/* Style for the node content area */
+.node__content {
+    padding: 10px; /* Add some padding inside the node */
+
+}
