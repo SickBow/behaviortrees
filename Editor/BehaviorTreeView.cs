@@ -12,6 +12,7 @@ public class BehaviorTreeView : GraphView
     private float nodeWidth = 150;
     private float xSpacing = 600;
     private float ySpacing = 200;
+    private BehaviorTreeNode _rootNode;
 
     public BehaviorTreeView(SerializedObject serializedObject){
         m_serializedObject = serializedObject;
@@ -29,6 +30,58 @@ public class BehaviorTreeView : GraphView
         this.AddManipulator(new SelectionDragger());
         this.AddManipulator(new RectangleSelector());
         this.AddManipulator(new ClickSelector());
+
+        // Create a new label for the slider
+        var xSpacingSliderLabel = new Label("X Spacing: 600")
+        {
+            style = { position = Position.Absolute, top = 10, left = 10 }
+        };
+        var minSpacingSliderLabel = new Label("Minimum Spacing: 150")
+        {
+            style = { position = Position.Absolute, top = 50, left = 10 }
+        };
+        Add(xSpacingSliderLabel);
+        Add(minSpacingSliderLabel);
+
+        // Create a new slider
+        var xSpacingSlider = new Slider(0, 1000)  // Adjust the range as needed
+        {
+            value = xSpacing, // Set initial value to xSpacing
+            style = { position = Position.Absolute, top = 30, left = 10, width = 150 }
+        };
+        var minSpacingSlider = new Slider(0, 500)  // Adjust the range as needed
+        {
+            value = nodeWidth, // Set initial value to nodeWidth
+            style = { position = Position.Absolute, top = 70, left = 10, width = 150 }
+        };
+
+        // Add an event listener to the slider
+        xSpacingSlider.RegisterValueChangedCallback(evt =>
+        {
+            xSpacing = evt.newValue;
+            xSpacingSliderLabel.text = $"X Spacing: {xSpacing}";
+            if (_rootNode != null)
+            {
+                BehaviorTreeGraphNode rootGraphNode = FindGraphNode(_rootNode);
+                PositionNode(rootGraphNode, 0, new Vector2(0, 0));
+            }
+        });
+
+        // Add an event listener to the slider
+        minSpacingSlider.RegisterValueChangedCallback(evt =>
+        {
+            nodeWidth = evt.newValue;
+            minSpacingSliderLabel.text = $"Minimum Spacing: {nodeWidth}";
+            if (_rootNode != null)
+            {
+                BehaviorTreeGraphNode rootGraphNode = FindGraphNode(_rootNode);
+                PositionNode(rootGraphNode, 0, new Vector2(0, 0));
+            }
+        });
+
+        // Add the slider to the GraphView
+        Add(xSpacingSlider);
+        Add(minSpacingSlider);
     }
 
     public void PopulateView(BehaviorTreeNode rootNode)
@@ -40,6 +93,7 @@ public class BehaviorTreeView : GraphView
         if (rootNode == null)
             return;
 
+        _rootNode = rootNode;
         // Recursive method to create and add nodes
         CreateGraphNode(rootNode);
 
