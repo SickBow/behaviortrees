@@ -12,6 +12,7 @@ public class BehaviorTreeView : GraphView
     private float nodeWidth = 150;
     private float xSpacing = 600;
     private float ySpacing = 200;
+    private float xSpacingDecayFactor = 0.75f;
     private BehaviorTreeNode _rootNode;
 
     public BehaviorTreeView(SerializedObject serializedObject){
@@ -40,8 +41,13 @@ public class BehaviorTreeView : GraphView
         {
             style = { position = Position.Absolute, top = 50, left = 10 }
         };
+        var xSpacingDecayFactorSliderLabel = new Label("X Spacing Decay Factor: 0.75f")
+        {
+            style = { position = Position.Absolute, top = 90, left = 10 }
+        };
         Add(xSpacingSliderLabel);
         Add(minSpacingSliderLabel);
+        Add(xSpacingDecayFactorSliderLabel);
 
         // Create a new slider
         var xSpacingSlider = new Slider(0, 3000)  // Adjust the range as needed
@@ -53,6 +59,11 @@ public class BehaviorTreeView : GraphView
         {
             value = nodeWidth, // Set initial value to nodeWidth
             style = { position = Position.Absolute, top = 70, left = 10, width = 150 }
+        };
+        var xSpacingDecayFactorSlider = new Slider(0.05f, 1)  // Adjust the range as needed
+        {
+            value = xSpacingDecayFactor, // Set initial value to nodeWidth
+            style = { position = Position.Absolute, top = 110, left = 10, width = 150 }
         };
 
         // Add an event listener to the slider
@@ -78,10 +89,22 @@ public class BehaviorTreeView : GraphView
                 PositionNode(rootGraphNode, 0, new Vector2(0, 0));
             }
         });
+        // Add an event listener to the slider
+        xSpacingDecayFactorSlider.RegisterValueChangedCallback(evt =>
+        {
+            xSpacingDecayFactor = evt.newValue;
+            minSpacingSliderLabel.text = $"X Spacing Decay Factor: {xSpacingDecayFactor}";
+            if (_rootNode != null)
+            {
+                BehaviorTreeGraphNode rootGraphNode = FindGraphNode(_rootNode);
+                PositionNode(rootGraphNode, 0, new Vector2(0, 0));
+            }
+        });
 
         // Add the slider to the GraphView
         Add(xSpacingSlider);
         Add(minSpacingSlider);
+        Add(xSpacingDecayFactorSlider);
     }
 
     public void PopulateView(BehaviorTreeNode rootNode)
@@ -129,7 +152,7 @@ public class BehaviorTreeView : GraphView
     {
         // Calculate position based on depth and xPos
         
-        float widthDecreaseFactor = Mathf.Pow(0.7f, depth); // 0.9 = 90%, decreasing for each depth
+        float widthDecreaseFactor = Mathf.Pow(xSpacingDecayFactor, depth); // 0.9 = 90%, decreasing for each depth
         float totalWidth = totalSiblings * xSpacing * widthDecreaseFactor;
         float xOffset = (siblingIndex * xSpacing * widthDecreaseFactor);
 
