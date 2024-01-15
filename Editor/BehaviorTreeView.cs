@@ -44,7 +44,7 @@ public class BehaviorTreeView : GraphView
         Add(minSpacingSliderLabel);
 
         // Create a new slider
-        var xSpacingSlider = new Slider(0, 1000)  // Adjust the range as needed
+        var xSpacingSlider = new Slider(0, 3000)  // Adjust the range as needed
         {
             value = xSpacing, // Set initial value to xSpacing
             style = { position = Position.Absolute, top = 30, left = 10, width = 150 }
