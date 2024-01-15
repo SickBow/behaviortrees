@@ -156,14 +156,25 @@ public class BehaviorTreeView : GraphView
         if (depth <= 1) widthDecreaseFactor = 1;
         float totalWidth = totalSiblings * xSpacing * widthDecreaseFactor;
         float xOffset = (siblingIndex * xSpacing * widthDecreaseFactor);
-
-        if (graphNode.behaviorTreeNode is LeafNode leaf)
-        {
-            //xOffset = nodeWidth * siblingIndex;
-            //totalWidth = totalSiblings * nodeWidth;
-            
-        }
         float startOffset = totalWidth/2 - (xSpacing * widthDecreaseFactor)/2;
+
+        bool allSiblingsAreLeaves = true;
+        if (graphNode.behaviorTreeNode is LeafNode && graphNode.behaviorTreeNode.parent is CompositeNode parent)
+            foreach (var sibling in parent.children)
+            {
+                if (sibling is CompositeNode)
+                {
+                    allSiblingsAreLeaves = false;
+                    break;
+                }
+            }
+        
+        if (graphNode.behaviorTreeNode is LeafNode && allSiblingsAreLeaves)
+        {
+            xOffset = nodeWidth * siblingIndex;
+            totalWidth = totalSiblings * nodeWidth;
+            startOffset = totalWidth / 2;
+        }
 
         Vector2 position = new Vector2(parentPosition.x + xOffset - startOffset, ySpacing * depth);
 
