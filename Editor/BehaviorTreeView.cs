@@ -93,7 +93,7 @@ public class BehaviorTreeView : GraphView
         xSpacingDecayFactorSlider.RegisterValueChangedCallback(evt =>
         {
             xSpacingDecayFactor = evt.newValue;
-            minSpacingSliderLabel.text = $"X Spacing Decay Factor: {xSpacingDecayFactor}";
+            xSpacingDecayFactorSliderLabel.text = $"X Spacing Decay Factor: {xSpacingDecayFactor}";
             if (_rootNode != null)
             {
                 BehaviorTreeGraphNode rootGraphNode = FindGraphNode(_rootNode);
