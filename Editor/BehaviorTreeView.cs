@@ -153,15 +153,17 @@ public class BehaviorTreeView : GraphView
         // Calculate position based on depth and xPos
         
         float widthDecreaseFactor = Mathf.Pow(xSpacingDecayFactor, depth); // 0.9 = 90%, decreasing for each depth
+        if (depth <= 1) widthDecreaseFactor = 1;
         float totalWidth = totalSiblings * xSpacing * widthDecreaseFactor;
         float xOffset = (siblingIndex * xSpacing * widthDecreaseFactor);
 
         if (graphNode.behaviorTreeNode is LeafNode leaf)
         {
-            xOffset = nodeWidth * siblingIndex;
-            totalWidth = totalSiblings * nodeWidth;
+            //xOffset = nodeWidth * siblingIndex;
+            //totalWidth = totalSiblings * nodeWidth;
+            
         }
-        float startOffset = totalWidth / 2;
+        float startOffset = totalWidth/2 - (xSpacing * widthDecreaseFactor)/2;
 
         Vector2 position = new Vector2(parentPosition.x + xOffset - startOffset, ySpacing * depth);
 
