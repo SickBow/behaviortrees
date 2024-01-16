@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor.Experimental.GraphView;
+using UnityEditor;
 using UnityEngine.UIElements;
 using Sickbow.BehaviorTrees;
 using System.Reflection;
@@ -60,9 +61,22 @@ public class BehaviorTreeGraphNode : Node
 
         bottomContainer.Add(outputPort);
 
+        // Add double-click event listener
+        this.AddManipulator(new Clickable(OnDoubleClick));
+
 
         RefreshExpandedState(); // Refresh to update the layout
         RefreshPorts();
+    }
+
+    private void OnDoubleClick()
+    {
+        if (behaviorTreeNode != null)
+        {
+            // Focus on the associated .asset file in the Inspector
+            EditorGUIUtility.PingObject(behaviorTreeNode);
+            Selection.activeObject = behaviorTreeNode;
+        }
     }
 
     public void UpdateVisual()
