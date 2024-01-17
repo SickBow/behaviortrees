@@ -15,6 +15,7 @@ public class LeafNode : BehaviorTreeNode
     {
         State = NodeState.Running;
 
+        SetPreConditions(owner);
         if (CheckPreConditions() == false) {
             FalseActions(owner);
             State = NodeState.Failure;
@@ -24,6 +25,8 @@ public class LeafNode : BehaviorTreeNode
         State = NodeState.Success;
         return true;
     }
+
+    protected virtual void SetPreConditions(GameObject owner) {}
 
     protected bool CheckPreConditions(){
         if (preConditions.Count == 0) return true;
