@@ -29,7 +29,7 @@ public class BehaviorTreeRunner : MonoBehaviour
         }
     }
     public bool GetConditionValue(string valueName){
-        return _valuePairs[valueName];
+        return _valuePairs[valueName].value;
     }
     public void SetConditionValue(string valueName, bool value){
         _valuePairs[valueName].value = value;
